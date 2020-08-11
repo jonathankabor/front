@@ -4,15 +4,16 @@ import { Ingrédients } from './Ingrédients/Ingrédients';
 
 export function Site(){
 
-const [page, setPage] = useState('recipes')
+const [page, setPage] = useState('ingrédients')
 const {
     ingrédients,
-    fetchIngrédients
+    fetchIngrédients,
+    deleteIngrédient,
 } = useIngrédients()
 
 let content = null
 if(page === 'ingrédients'){
-    content = <Ingrédients ingrédients={ingrédients}/>
+    content = <Ingrédients ingrédients={ingrédients} onDelete={deleteIngrédient}/>
 }
 
 useEffect(function () {

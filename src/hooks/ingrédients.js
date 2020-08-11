@@ -9,6 +9,12 @@ function reducer(state, action){
             return { ...state, loading: true }
         case 'SET_INGREDIENTS':
         return { ...state, ingrédients: action.payload, loading: false}
+        case 'DELETE_INGREDIENT':
+        return { ...state, ingrédients: state.ingrédients.filter(ingrédient => ingrédient !== action.payload)}
+        case 'ADD_INGREDIENTS':
+        return { ...state, ingrédients: [...state.ingrédients, action.payload]}
+        case 'UPDATE_INGREDIENTS':
+        return { ...state, ingrédients: state.ingrédients.map(ingrédient => ingrédient === action.target ? action.payload : ingrédient)}
     }
 }
 
@@ -28,6 +34,12 @@ export function useIngrédients(){
             dispatch({ type: 'FETCHING_INGREDIENTS'})
             const ingrédients = await apiFetch('/ingredients')
             dispatch({type: 'SET_INGREDIENTS', payload: ingrédients})
+        },
+        deleteIngrédient: async function (ingredient){
+            await apiFetch('/ingredients/' + ingredient.id, {
+                method: 'GET'
+            })
+            dispatch({ type: 'DELETE_INGREDIENT', payload: ingredient})
         }
     }
 }
