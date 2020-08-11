@@ -1,12 +1,23 @@
 import React, { useState } from 'react';
+import { useIngrédients } from '../hooks/ingrédients';
+import { Ingrédients } from './Ingrédients/Ingrédients';
 
 export function Site(){
 
 const [page, setPage] = useState('ingrédients')
+const {
+    ingrédients,
+    fetchIngrédients
+} = useIngrédients()
+
+let content = null
+if(page === 'ingrédients'){
+    content = <Ingrédients ingrédients={ingrédients}/>
+}
 
 return <>
     <NavBar currentPage={page} onClick={setPage}/>
-    <p>{page}</p>
+    {content}
 </>
 
 }
@@ -25,10 +36,10 @@ function NavBar({currentPage, onClick}){
     <a href="#" className="navbar-brand">Recettes</a>
     <ul className="navbar-nav mr-auto">
         <li className={navClass('recipes')}>
-            <a href="" className="nav-link" onClick={() => onClick('recipes')}>Recettes</a>
+            <a href="#recipes" className="nav-link" onClick={() => onClick('recipes')}>Recettes</a>
         </li>
         <li className={navClass('ingrédients')}>
-            <a href="" className="nav-link" onClick={() => onClick('ingrédients')}>Ingrédients</a>
+            <a href="#ingrédients" className="nav-link" onClick={() => onClick('ingrédients')}>Ingrédients</a>
         </li>
     </ul>
     </nav>
