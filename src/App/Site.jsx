@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useIngrédients } from '../hooks/ingrédients';
 import { Ingrédients } from './Ingrédients/Ingrédients';
 
 export function Site(){
 
-const [page, setPage] = useState('ingrédients')
+const [page, setPage] = useState('recipes')
 const {
     ingrédients,
     fetchIngrédients
@@ -14,6 +14,12 @@ let content = null
 if(page === 'ingrédients'){
     content = <Ingrédients ingrédients={ingrédients}/>
 }
+
+useEffect(function () {
+    if(page === 'ingrédients'){
+        fetchIngrédients()
+    }
+}, [page])
 
 return <>
     <NavBar currentPage={page} onClick={setPage}/>
