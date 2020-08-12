@@ -9,18 +9,25 @@ const {
     ingrédients,
     fetchIngrédients,
     deleteIngrédient,
+    updateIngrédient,
+    createIngrédient
 } = useIngrédients()
 
 let content = null
 if(page === 'ingrédients'){
-    content = <Ingrédients ingrédients={ingrédients} onDelete={deleteIngrédient}/>
+    content = <Ingrédients 
+    ingrédients={ingrédients} 
+    onDelete={deleteIngrédient}
+    onUpdate={updateIngrédient}
+    onCreate={createIngrédient}
+    />
 }
 
 useEffect(function () {
     if(page === 'ingrédients'){
         fetchIngrédients()
     }
-}, [page])
+}, [page, fetchIngrédients])
 
 return <>
     <NavBar currentPage={page} onClick={setPage}/>
@@ -40,7 +47,7 @@ function NavBar({currentPage, onClick}){
     }
 
     return <nav className="navbar navbar-expand-sm navbar-dark bg-primary mb-4">
-    <a href="#" className="navbar-brand">Recettes</a>
+    <a href="#recipes" className="navbar-brand" onClick={() => onClick('recipes')}>Recettes</a>
     <ul className="navbar-nav mr-auto">
         <li className={navClass('recipes')}>
             <a href="#recipes" className="nav-link" onClick={() => onClick('recipes')}>Recettes</a>
