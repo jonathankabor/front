@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useIngrédients } from '../hooks/ingrédients';
 import { Ingrédients } from './Ingrédients/Ingrédients';
+import { Recipes } from './Recipes/Recipes';
+import { useRecipes } from '../hooks/recipes';
 
 export function Site(){
 
-const [page, setPage] = useState('ingrédients')
+const [page, setPage] = useState('recipes')
 const {
     ingrédients,
     fetchIngrédients,
@@ -12,6 +14,11 @@ const {
     updateIngrédient,
     createIngrédient
 } = useIngrédients()
+const{
+    recipes,
+    fetchRecipes,
+    fetchRecipe,
+} = useRecipes()
 
 let content = null
 if(page === 'ingrédients'){
@@ -21,17 +28,24 @@ if(page === 'ingrédients'){
     onUpdate={updateIngrédient}
     onCreate={createIngrédient}
     />
+}else if (page === 'recipes') {
+    content = <Recipes recipes={recipes} onClick={fetchRecipe}/>
 }
 
 useEffect(function () {
     if(page === 'ingrédients'){
         fetchIngrédients()
     }
+    if (page === 'recipes'){
+        fetchRecipes()
+    }
 }, [page, fetchIngrédients])
 
 return <>
     <NavBar currentPage={page} onClick={setPage}/>
+    <div className="container">
     {content}
+    </div>
 </>
 
 }
