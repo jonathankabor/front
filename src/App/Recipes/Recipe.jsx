@@ -6,14 +6,28 @@ import { Modal } from '../../ui/Modal'
 export function Recipe({recipe}) {
     return (
         <Modal title={recipe.title} onClose={() => null}>
-            {recipe.content ? recipe.content : <Loader/>}
+            {!recipe.content ?  
+            <Loader/> :
+            <RecipeDetail recipe={recipe} />
+            }
         </Modal>
     )
+}
+
+function RecipeDetail({recipe}) {
+
+    const htmlContent = {__html: recipe.content.split("\n").join('<br/>')}
+
+    return <div dangerouslySetInnerHTML={htmlContent}> 
+       
+    </div>
 }
 
 Recipe.propTypes = {
     recipe: PropTypes.object.isRequired
 }
+
+
 
 
 
