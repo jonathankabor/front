@@ -44,7 +44,7 @@ import { Button } from '../ui/Button';
                 <label htmlFor="password">Mot de passe</label>
                 <input type="password" name="password" id="password" className="form-control" required></input>
             </div>
-            <Button type="submit btn btn-primary" loading={loading}>Se connecter</Button>
+            <Button type="submit" className="btn btn-primary" loading={loading}>Se connecter</Button>
         </form>
     }
 
