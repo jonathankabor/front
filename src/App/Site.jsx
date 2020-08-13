@@ -20,6 +20,7 @@ const{
     recipe,
     fetchRecipes,
     fetchRecipe,
+    deselectRecipe,
 } = useRecipes()
 
 let content = null
@@ -35,7 +36,7 @@ if(page === 'ingrédients'){
 }
 
 useEffect(function () {
-    if(page === 'ingrédients'){
+    if(page === 'ingrédients') {
         fetchIngrédients()
     }
     if (page === 'recipes'){
@@ -46,7 +47,7 @@ useEffect(function () {
 return <>
     <NavBar currentPage={page} onClick={setPage}/>
     <div className="container">
-        {recipe ? <Recipe recipe={recipe} /> : null}
+        {recipe ? <Recipe recipe={recipe} onClose={deselectRecipe}/> : null}
         {content}
     </div>
 </>

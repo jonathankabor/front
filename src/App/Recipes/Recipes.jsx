@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import PropTypes from 'prop-types'
 import { Loader } from '../../ui/Loader';
 import { Button } from '../../ui/Button';
@@ -19,7 +19,7 @@ Recipes.prototype = {
     onClick: PropTypes.func.isRequired,
 }
 
-function Recipe({recipe, onClick}){
+ const Recipe = memo(function Recipe({recipe, onClick}){
     return <div className="card">
             <div className="card-body">
                 <div className="card-title">{recipe.title}</div>
@@ -27,4 +27,4 @@ function Recipe({recipe, onClick}){
                 <Button onClick={() => onClick(recipe)}>Voir la recette</Button>
             </div>
     </div>
-}
+})

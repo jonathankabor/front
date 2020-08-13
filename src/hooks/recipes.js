@@ -1,5 +1,5 @@
 import { apiFetch } from "../utils/api"
-import { useReducer } from "react"
+import { useReducer, useCallback } from "react"
 
 function reducer(state, action){
     console.log('RECIPES REDUCE', action.type, action)
@@ -10,6 +10,8 @@ function reducer(state, action){
             return {...state, loading: false, recipes: action.payload}
         case 'FETCHING_RECIPE':
             return {...state, recipeId: action.payload.id}
+        case 'DESELECT_RECIPE':
+            return {...state, recipeId: null}
         case 'SET_RECIPE' :
             return{
                 ...state,
@@ -41,10 +43,17 @@ export function useRecipes(){
             const recipes = await apiFetch('/recipes')
             dispatch({type: 'SET_RECIPES', payload: recipes})
         },
-        fetchRecipe: async function (recipe) {
+        fetchRecipe: useCallback(async function (recipe) {
             dispatch({ type: 'FETCHING_RECIPE', payload: recipe})
-            recipe = await apiFetch('/recipes/' + recipe.id)
-            dispatch({ type: 'SET_RECIPE', payload: recipe})
+            if(!recipe.content){
+                recipe = await apiFetch('/recipes/' + recipe.id)
+                dispatch({ type: 'SET_RECIPE', payload: recipe})
+            }
+            
+        }, []),
+           
+        deselectRecipe: function(){
+            dispatch({type: 'DESELECT_RECIPE'})
         }
     }
 }
