@@ -8,6 +8,8 @@ function reducer(state, action){
             return {...state, loading: true}
         case 'SET_RECIPES' :
             return {...state, loading: false, recipes: action.payload}
+        case 'FETCHING_RECIPE':
+            return {...state, recipeId: action.payload.id}
         case 'SET_RECIPE' :
             return{
                 ...state,
@@ -22,10 +24,15 @@ export function useRecipes(){
 
     const [state, dispatch] = useReducer(reducer,{
         loading: false,
-        recipes: null
+        recipes: null,
+        recipeId: null
     })
+
+    const recipe = state.recipes ? state.recipes.find(r => r.id === state.recipeId) : null
+
     return{
         recipes: state.recipes,
+        recipe: recipe,
         fetchRecipes: async function (){
             if(state.loading || state.recipes !== null){
                 return
@@ -35,6 +42,7 @@ export function useRecipes(){
             dispatch({type: 'SET_RECIPES', payload: recipes})
         },
         fetchRecipe: async function (recipe) {
+            dispatch({ type: 'FETCHING_RECIPE', payload: recipe})
             recipe = await apiFetch('/recipes/' + recipe.id)
             dispatch({ type: 'SET_RECIPE', payload: recipe})
         }

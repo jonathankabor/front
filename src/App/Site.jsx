@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useIngrédients } from '../hooks/ingrédients';
 import { Ingrédients } from './Ingrédients/Ingrédients';
 import { Recipes } from './Recipes/Recipes';
+import { Recipe } from './Recipes/Recipe';
 import { useRecipes } from '../hooks/recipes';
 
 export function Site(){
@@ -16,6 +17,7 @@ const {
 } = useIngrédients()
 const{
     recipes,
+    recipe,
     fetchRecipes,
     fetchRecipe,
 } = useRecipes()
@@ -44,7 +46,8 @@ useEffect(function () {
 return <>
     <NavBar currentPage={page} onClick={setPage}/>
     <div className="container">
-    {content}
+        {recipe ? <Recipe recipe={recipe} /> : null}
+        {content}
     </div>
 </>
 
