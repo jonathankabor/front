@@ -1,59 +1,60 @@
 import React, { useState, useEffect } from 'react';
-import { useIngrédients } from '../hooks/ingrédients';
-import { Ingrédients } from './Ingrédients/Ingrédients';
+import { useIngredients } from '../hooks/ingredients';
+import { Ingredients } from './Ingredients/Ingredients';
 import { Recipes } from './Recipes/Recipes';
 import { Recipe } from './Recipes/Recipe';
 import { useRecipes } from '../hooks/recipes';
 import { useToggle } from '../hooks';
 import { Modal } from '../ui/Modal';
-import { RecipeForm } from './Recipes/RecipeForm';
+import { CreateRecipeForm } from './Recipes/CreateRecipeForm';
 
 export function Site(){
 
 const [page, setPage] = useState('recipes')
 const [add, toggleAdd] = useToggle(true)
 const {
-    ingrédients,
-    fetchIngrédients,
-    deleteIngrédient,
-    updateIngrédient,
-    createIngrédient
-} = useIngrédients()
+    ingredients,
+    fetchIngredients,
+    deleteIngredient,
+    updateIngredient,
+    createIngredient
+} = useIngredients()
 const{
     recipes,
     recipe,
     fetchRecipes,
     fetchRecipe,
     deselectRecipe,
+    createRecipe,
 } = useRecipes()
 
 let content = null
-if(page === 'ingrédients'){
-    content = <Ingrédients 
-    ingrédients={ingrédients} 
-    onDelete={deleteIngrédient}
-    onUpdate={updateIngrédient}
-    onCreate={createIngrédient}
+if(page === 'ingredients'){
+    content = <Ingredients 
+    ingredients={ingredients} 
+    onDelete={deleteIngredient}
+    onUpdate={updateIngredient}
+    onCreate={createIngredient}
     />
 }else if (page === 'recipes') {
     content = <Recipes recipes={recipes} onClick={fetchRecipe}/>
 }
 
 useEffect(function () {
-    if(page === 'ingrédients' || add === true) {
-        fetchIngrédients()
+    if(page === 'ingredients' || add === true) {
+        fetchIngredients()
     }
     if (page === 'recipes'){
         fetchRecipes()
     }
-}, [page, fetchIngrédients, add])
+}, [page, fetchIngredients, add])
 
 return <>
     <NavBar currentPage={page} onClick={setPage} onButtonClick={toggleAdd}/>
     <div className="container">
         {recipe ? <Recipe recipe={recipe} onClose={deselectRecipe}/> : null}
         {add &&  <Modal title="Créer une recette" onClose={toggleAdd}>
-                    <RecipeForm ingrédients={ingrédients}/>
+                    <CreateRecipeForm ingredients={ingredients} onSubmit={createRecipe}/>
                 </Modal>}
         {content}
     </div>
@@ -77,8 +78,8 @@ function NavBar({currentPage, onClick, onButtonClick}){
         <li className={navClass('recipes')}>
             <a href="#recipes" className="nav-link" onClick={() => onClick('recipes')}>Recettes</a>
         </li>
-        <li className={navClass('ingrédients')}>
-            <a href="#ingrédients" className="nav-link" onClick={() => onClick('ingrédients')}>Ingrédients</a>
+        <li className={navClass('ingredients')}>
+            <a href="#ingredients" className="nav-link" onClick={() => onClick('ingredients')}>Ingrédients</a>
         </li>
     </ul>
     <button onClick={onButtonClick} className="btn btn-outline-light">Ajouter</button>

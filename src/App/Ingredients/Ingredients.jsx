@@ -5,24 +5,23 @@ import { Trash, Upload } from '../../ui/Icon';
 import { ApiErrors } from '../../utils/api';
 import { Field } from '../../ui/Field';
 
-export function Ingrédients({ingrédients, onDelete, onUpdate, onCreate}){
+export function Ingredients({ingredients, onDelete, onUpdate, onCreate}){
     return <div>
         <h1>Ingrédients</h1>
-        <CreateIngrédientForm onSubmit={onCreate}/>
-        {ingrédients === null ? <Loader /> : <IngrédientsList ingrédients={ingrédients} 
+        <CreateIngredientForm onSubmit={onCreate}/>
+        {ingredients === null ? <Loader /> : <IngredientsList ingredients={ingredients} 
         onDelete={onDelete} onUpdate={onUpdate}/>}
-        
         </div>
 }
 
-function IngrédientsList({ingrédients, onDelete, onUpdate}){
+function IngredientsList({ingredients, onDelete, onUpdate}){
     return <div>
-       {ingrédients.map(ingrédient => <Ingrédient key={ingrédient.id} ingrédient={ingrédient} 
+       {ingredients.map(ingredient => <Ingredient key={ingredient.id} ingredient={ingredient} 
        onDelete={onDelete} onUpdate={onUpdate}/>)}
         </div>
 }
 
-const Ingrédient = memo(function ({ingrédient, onDelete, onUpdate}){
+const Ingredient = memo(function ({ingredient, onDelete, onUpdate}){
 
     const [loading, setLoading] = useState(false)
     const [errors, setErrors] = useState([])
@@ -30,7 +29,7 @@ const Ingrédient = memo(function ({ingrédient, onDelete, onUpdate}){
     const handleDelete = async function (e){
         e.preventDefault()
         setLoading(true)
-        await onDelete(ingrédient)
+        await onDelete(ingredient)
        
     }
     const handleSubmit = async function (e) {
@@ -38,7 +37,7 @@ const Ingrédient = memo(function ({ingrédient, onDelete, onUpdate}){
         setErrors([])
         setLoading(true)
         try{ 
-        await onUpdate(ingrédient, new FormData(e.target))
+        await onUpdate(ingredient, new FormData(e.target))
 
         }catch (e){
             if(e instanceof ApiErrors){
@@ -60,14 +59,14 @@ const Ingrédient = memo(function ({ingrédient, onDelete, onUpdate}){
     }
 
     return <form className="d-flex align-items-start" onSubmit={handleSubmit}>
-        <Field  defaultValue={ingrédient.title} name="title" className="mr-2" error={errorFor('title')}/>
-        <Field  defaultValue={ingrédient.unit} name="unit" className="mr-2" error={errorFor('unit')}/>
+        <Field  defaultValue={ingredient.title} name="title" className="mr-2" error={errorFor('title')}/>
+        <Field  defaultValue={ingredient.unit} name="unit" className="mr-2" error={errorFor('unit')}/>
         <Button type="submit btn btn-primary" loading={loading}><Upload /></Button>
         <Button type="danger" onClick={handleDelete} loading={loading}><Trash/></Button>
         </form>
 })
 
-function CreateIngrédientForm ({onSubmit}){
+function CreateIngredientForm ({onSubmit}){
 
     const [loading, setLoading] = useState(false)
     const [errors, setErrors] = useState([])
