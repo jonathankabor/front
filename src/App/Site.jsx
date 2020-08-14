@@ -4,10 +4,12 @@ import { Ingrédients } from './Ingrédients/Ingrédients';
 import { Recipes } from './Recipes/Recipes';
 import { Recipe } from './Recipes/Recipe';
 import { useRecipes } from '../hooks/recipes';
+import { useToggle } from '../hooks';
 
 export function Site(){
 
 const [page, setPage] = useState('recipes')
+const [add, toggleAdd] = useToggle(false)
 const {
     ingrédients,
     fetchIngrédients,
@@ -45,7 +47,7 @@ useEffect(function () {
 }, [page, fetchIngrédients])
 
 return <>
-    <NavBar currentPage={page} onClick={setPage}/>
+    <NavBar currentPage={page} onClick={setPage} onButtonClick={toggleAdd}/>
     <div className="container">
         {recipe ? <Recipe recipe={recipe} onClose={deselectRecipe}/> : null}
         {content}
@@ -54,7 +56,7 @@ return <>
 
 }
 
-function NavBar({currentPage, onClick}){ 
+function NavBar({currentPage, onClick, onButtonClick}){ 
 
     const navClass = function (page) {
         let className = 'nav-item'
@@ -74,5 +76,6 @@ function NavBar({currentPage, onClick}){
             <a href="#ingrédients" className="nav-link" onClick={() => onClick('ingrédients')}>Ingrédients</a>
         </li>
     </ul>
+    <button onClick={onButtonClick} className="btn btn-outline-light">Ajouter</button>
     </nav>
 }
