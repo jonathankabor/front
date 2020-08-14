@@ -1,6 +1,6 @@
-    import React, { useState } from 'react';
-    import PropTypes from 'prop-types';
-    import { ApiErrors, apiFetch } from '../utils/api';
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+import { ApiErrors, apiFetch } from '../utils/api';
 import { Button } from '../ui/Button';
 
 
