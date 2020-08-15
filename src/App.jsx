@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { LoginForm } from './App/LoginForm';
 import { apiFetch, } from './utils/api';
+import {Site} from './App/Site';
 
 export default function App() {
 
@@ -17,7 +18,7 @@ export default function App() {
   }
 
   return (
-    user ? <div> Connecté !</div> : <LoginForm onConnect={setUser} />
+    user ? < Site /> : <LoginForm onConnect={setUser} />
     
   );
 }

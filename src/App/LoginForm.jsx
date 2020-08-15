@@ -1,6 +1,7 @@
-    import React, { useState } from 'react';
-    import PropTypes from 'prop-types';
-    import { ApiErrors, apiFetch } from '../utils/api';
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+import { ApiErrors, apiFetch } from '../utils/api';
+import { Button } from '../ui/Button';
 
 
 
@@ -43,7 +44,7 @@
                 <label htmlFor="password">Mot de passe</label>
                 <input type="password" name="password" id="password" className="form-control" required></input>
             </div>
-            <button disabled={loading} type="submit" className="btn btn-primary">Se connecter</button>
+            <Button type="submit" className="btn btn-primary" loading={loading}>Se connecter</Button>
         </form>
     }
 
