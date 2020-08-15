@@ -4,35 +4,50 @@ import { Loader } from '../../ui/Loader'
 import { Modal } from '../../ui/Modal'
 import { useToggle } from '../../hooks'
 import { EditRecipeForm } from './RecipeForm'
+import { Button } from '../../ui/Button'
 
-export function Recipe({recipe, onClose, onEdit}) {
+export function Recipe({recipe, onClose, onEdit, ingredients, onDelete, onUpdate}) {
     return (
         <Modal title={recipe.title} onClose={onClose}>
             {!recipe.ingredients ?  
             <Loader/> :
-            <RecipeDetail recipe={recipe} onEdit={onEdit} />
+            <RecipeDetail 
+            recipe={recipe} 
+            onEdit={onEdit}
+            onUpdate={onUpdate} 
+            ingredients={ingredients}/>
             }
+            <Button type="danger" onClick={() => onDelete(recipe)}>Supprimer</Button>
         </Modal>
     )
 }
 
-function RecipeDetail({recipe, ingredients, onEdit}) {
+function RecipeDetail({recipe, ingredients, onEdit, onUpdate}) {
 
     const [editMode, toggleEditMode] = useToggle(false)
     const htmlContent =  { __html: recipe.content.split("\n").join('<br/>')}
+
+    const handleUpdate = async function (data){
+        await onUpdate(recipe, data)
+        toggleEditMode()
+    }
 
     const handleEditMode = function (){
         toggleEditMode()
         onEdit()
     }
 
-    return editMode ? <EditRecipeForm recipe={recipe} ingredients={ingredients} />: <>
+    return editMode ? <EditRecipeForm 
+        recipe={recipe} 
+        ingredients={ingredients}
+        onSubmit={handleUpdate} 
+        />: <>
         <div dangerouslySetInnerHTML={htmlContent}></div>
         <h4 className="mt-4">Ingrédients</h4>
         <ul>
         {recipe.ingredients.map(i => <IngredientRow ingredient={i} key={i.id}/>)}
         </ul>
-        <button onClick={handleEditMode}>Editer</button>
+        <button onClick={handleEditMode} className="btn btn-primary">Editer</button>
     </>
 }
 

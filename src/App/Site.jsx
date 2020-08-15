@@ -26,6 +26,8 @@ const{
     fetchRecipe,
     deselectRecipe,
     createRecipe,
+    updateRecipe,
+    deleteRecipe,
 } = useRecipes()
 
 let content = null
@@ -52,7 +54,13 @@ useEffect(function () {
 return <>
     <NavBar currentPage={page} onClick={setPage} onButtonClick={toggleAdd}/>
     <div className="container">
-        {recipe ? <Recipe recipe={recipe} onClose={deselectRecipe} onEdit={fetchIngredients}/> : null}
+        {recipe ? <Recipe recipe={recipe} 
+            ingredients={ingredients} 
+            onClose={deselectRecipe} 
+            onEdit={fetchIngredients}
+            onUpdate={updateRecipe}
+            onDelete={deleteRecipe}
+        /> : null}
         {add &&  <Modal title="Créer une recette" onClose={toggleAdd}>
                     <CreateRecipeForm ingredients={ingredients} onSubmit={createRecipe}/>
                 </Modal>}

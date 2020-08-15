@@ -14,6 +14,8 @@ function reducer(state, action){
             return {...state, recipeId: null}
         case 'ADD_RECIPE' :
             return {...state, recipes: [action.payload, ...state.recipes]}
+        case 'DELETE_RECIPE' :
+            return {...state, recipes: state.recipes.filter(i => i !== action.payload)}
         case 'SET_RECIPE' :
             return{
                 ...state,
@@ -47,7 +49,7 @@ export function useRecipes(){
         },
         fetchRecipe: useCallback(async function (recipe) {
             dispatch({ type: 'FETCHING_RECIPE', payload: recipe})
-            if(!recipe.ingrédients){
+            if(!recipe.ingredients){
                 recipe = await apiFetch('/recipes/' + recipe.id)
                 dispatch({ type: 'SET_RECIPE', payload: recipe})
             }
@@ -60,6 +62,21 @@ export function useRecipes(){
                 body: data
             })
             dispatch({type: 'ADD_RECIPE', payload: recipe})
+        }),
+
+        updateRecipe: useCallback (async function (recipe, data){
+            recipe = await apiFetch('/recipes/' + recipe.id, {
+                method: 'put',
+                body: data
+            })
+            dispatch({type: 'SET_RECIPE', payload: recipe})
+        }),
+
+        deleteRecipe: useCallback (async function (recipe){
+            await apiFetch('/recipes/' + recipe.id, {
+                method: 'delete',
+            })
+            dispatch({type: 'DELETE_RECIPE', payload: recipe})
         }),
            
         deselectRecipe: function(){
