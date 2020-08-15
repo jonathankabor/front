@@ -6,12 +6,12 @@ import { Recipe } from './Recipes/Recipe';
 import { useRecipes } from '../hooks/recipes';
 import { useToggle } from '../hooks';
 import { Modal } from '../ui/Modal';
-import { CreateRecipeForm } from './Recipes/CreateRecipeForm';
+import { CreateRecipeForm } from './Recipes/RecipeForm';
 
 export function Site(){
 
 const [page, setPage] = useState('recipes')
-const [add, toggleAdd] = useToggle(true)
+const [add, toggleAdd] = useToggle(false)
 const {
     ingredients,
     fetchIngredients,
@@ -26,6 +26,8 @@ const{
     fetchRecipe,
     deselectRecipe,
     createRecipe,
+    updateRecipe,
+    deleteRecipe,
 } = useRecipes()
 
 let content = null
@@ -52,7 +54,13 @@ useEffect(function () {
 return <>
     <NavBar currentPage={page} onClick={setPage} onButtonClick={toggleAdd}/>
     <div className="container">
-        {recipe ? <Recipe recipe={recipe} onClose={deselectRecipe}/> : null}
+        {recipe ? <Recipe recipe={recipe} 
+            ingredients={ingredients} 
+            onClose={deselectRecipe} 
+            onEdit={fetchIngredients}
+            onUpdate={updateRecipe}
+            onDelete={deleteRecipe}
+        /> : null}
         {add &&  <Modal title="Créer une recette" onClose={toggleAdd}>
                     <CreateRecipeForm ingredients={ingredients} onSubmit={createRecipe}/>
                 </Modal>}

@@ -7,8 +7,15 @@ import { Trash } from '../../ui/Icon'
 import { ApiErrors } from '../../utils/api'
 
 
+export function CreateRecipeForm({ingredients, onSubmit}){
+    return <RecipeForm ingredients={ingredients} onSubmit={onSubmit} button="Ajouter"/>
+}
 
-export function CreateRecipeForm({ingredients, onSubmit}) {
+export function EditRecipeForm({ingredients, onSubmit, recipe}){
+    return <RecipeForm ingredients={ingredients} onSubmit={onSubmit} recipe={recipe} button="Editer" />
+}
+
+function RecipeForm({ingredients, onSubmit, recipe = {}, button}) {
 
    const {
        ingredients: recipeIngredients,
@@ -16,7 +23,7 @@ export function CreateRecipeForm({ingredients, onSubmit}) {
        updateQuantity,
        deleteIngredient,
        resetIngredients,
-   } = useIngredients()
+   } = useIngredients(recipe.ingredients)
 
    const [errors, setErrors] = useState({})
 
@@ -46,26 +53,33 @@ export function CreateRecipeForm({ingredients, onSubmit}) {
 }
     return <form className="row" onSubmit={handleSubmit}>
                 <div className="col-md-6">
-                    <Field name="title" required error={errors.title}>Titre</Field>
-                    <Field name="short" required type="textarea" error={errors.short}>Description courte</Field>
-                    <Field name="content" required type="textarea" error={errors.content}>Description</Field>
+                    <Field name="title" required error={errors.title} defaultValue={recipe.title}>Titre</Field>
+                    <Field name="short" required type="textarea" error={errors.short} defaultValue={recipe.short}>Description courte</Field>
+                    <Field name="content" required type="textarea" error={errors.content} defaultValue={recipe.content}>Description</Field>
                 </div>
                 <div className="col-md-6">
                     <h5>Ingrédients</h5>
-                    {recipeIngredients.map(i => <IngredientRow ingredient={i} key={i.id} onChange={updateQuantity} onDelete={deleteIngredient}/>)}
-                        {ingredients ? <Select ingredients={filteredIngredients} onChange={addIngredient}/> : <Loader/>}
+                    {recipeIngredients.map(i => <IngredientRow 
+                    ingredient={i} key={i.id} 
+                    onChange={updateQuantity} 
+                    onDelete={deleteIngredient}/>)}
+                        {ingredients ? <Select 
+                        ingredients={filteredIngredients} 
+                        onChange={addIngredient}/> : <Loader/>}
                 </div>
-                <Button type="submit btn btn-primary">Ajouter</Button>
+                <div className="col-md-12 mt-3">
+                    <Button type="submit btn btn-primary">{button}</Button>
+                </div>
             </form>
 }
 
-CreateRecipeForm.propTypes = {
+RecipeForm.propTypes = {
     ingredients: PropTypes.array,
 
 }
 
-function useIngredients(){
-    const [ingredients, setIngredients] = useState([])
+function useIngredients(initial){
+    const [ingredients, setIngredients] = useState(initial || [])
 
     return {
         ingredients: ingredients,

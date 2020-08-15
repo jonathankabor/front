@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useContext } from 'react';
 import PropTypes from 'prop-types'
 import { Loader } from '../../ui/Loader';
 import { Button } from '../../ui/Button';
@@ -14,12 +14,12 @@ export function Recipes({recipes, onClick}){
     </div>
 }
 
-Recipes.prototype = {
+Recipes.propTypes = {
     recipes: PropTypes.array,
     onClick: PropTypes.func.isRequired,
 }
 
- const Recipe = memo(function Recipe({recipe, onClick}){
+ const Recipe = memo(function ({recipe, onClick}){
     return <div className="card">
             <div className="card-body">
                 <div className="card-title">{recipe.title}</div>
