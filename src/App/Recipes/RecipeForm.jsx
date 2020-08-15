@@ -7,8 +7,15 @@ import { Trash } from '../../ui/Icon'
 import { ApiErrors } from '../../utils/api'
 
 
+export function CreateRecipeForm({ingredients, onSubmit}){
+    return <RecipeForm ingredients={ingredients} onSubmit={onSubmit} />
+}
 
-export function CreateRecipeForm({ingredients, onSubmit}) {
+export function EditRecipeForm({ingredients, onSubmit, recipe}){
+    return <RecipeForm ingredients={ingredients} onSubmit={onSubmit} recipe={recipe} />
+}
+
+function RecipeForm({ingredients, onSubmit, recipe = null}) {
 
    const {
        ingredients: recipeIngredients,
@@ -59,7 +66,7 @@ export function CreateRecipeForm({ingredients, onSubmit}) {
             </form>
 }
 
-CreateRecipeForm.propTypes = {
+RecipeForm.propTypes = {
     ingredients: PropTypes.array,
 
 }
